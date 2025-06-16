@@ -1,4 +1,4 @@
-package com.touhouqing.chataidemo;
+package com.touhouqing.chatAiDemo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

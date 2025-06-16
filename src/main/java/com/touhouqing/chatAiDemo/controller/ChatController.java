@@ -1,4 +1,4 @@
-package com.touhouqing.chataidemo.controller;
+package com.touhouqing.chatAiDemo.controller;
 
 
 import lombok.RequiredArgsConstructor;
