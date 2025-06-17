@@ -10,8 +10,10 @@ public class MvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET, POST, PUT, DELETE, OPTIONS")
-                .allowedHeaders("*");
+                // 使用 allowedOriginPatterns 替代 allowedOrigins
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true); // 允许携带认证信息
     }
 }
