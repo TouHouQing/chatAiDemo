@@ -1,6 +1,7 @@
 package com.touhouqing.chatAiDemo.config;
 
 import com.touhouqing.chatAiDemo.constants.SystemConstants;
+import com.touhouqing.chatAiDemo.tools.CourseTools;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -51,5 +52,18 @@ public class CommonConfiguration {
                         MessageChatMemoryAdvisor.builder(chatMemory).build()
                 )
                .build();
+    }
+
+    @Bean
+    public ChatClient serviceChatClient(OpenAiChatModel model, ChatMemory chatMemory, CourseTools  courseTools) {
+        return ChatClient
+              .builder(model)
+              .defaultSystem(SystemConstants.SERVICE_SYSTEM_PROMPT)
+              .defaultAdvisors(
+                        new SimpleLoggerAdvisor(),
+                        MessageChatMemoryAdvisor.builder(chatMemory).build()
+              )
+              .defaultTools(courseTools)
+              .build();
     }
 }
