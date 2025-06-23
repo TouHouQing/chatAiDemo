@@ -4,15 +4,21 @@ import com.touhouqing.chatAiDemo.constants.SystemConstants;
 import com.touhouqing.chatAiDemo.tools.CourseTools;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.openai.OpenAiEmbeddingModel;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class CommonConfiguration {
@@ -65,5 +71,34 @@ public class CommonConfiguration {
               )
               .defaultTools(courseTools)
               .build();
+    }
+
+
+    @Bean
+    public ChatClient pdfChatClient(OpenAiChatModel model, ChatMemory chatMemory, VectorStore vectorStore) {
+        return ChatClient
+                .builder(model)
+                .defaultSystem("请根据上下文回答问题，遇到上下文没有的问题，不要随意编造。")
+                .defaultAdvisors(
+                        new SimpleLoggerAdvisor(),
+                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
+                        QuestionAnswerAdvisor.builder(vectorStore)
+                                .searchRequest(SearchRequest.builder()
+                                        .similarityThreshold(0.6)
+                                        .topK(2)
+                                        .build())
+                                .build()
+                )
+                .build();
+    }
+    
+    /**
+     * 为Milvus向量存储指定使用OpenAI的embedding model
+     * 解决多个embedding model冲突的问题
+     */
+    @Bean
+    @Primary
+    public EmbeddingModel primaryEmbeddingModel(OpenAiEmbeddingModel openAiEmbeddingModel) {
+        return openAiEmbeddingModel;
     }
 }
