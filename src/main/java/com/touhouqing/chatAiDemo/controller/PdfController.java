@@ -51,11 +51,14 @@ public class PdfController {
         }
         // 2.保存会话id
         chatHistoryRepository.save("pdf", chatId);
-        // 3.请求模型
+        // 3.构造过滤表达式
+        String filterExpression = "file_name == '" + file.getFilename() + "'";
+        log.info("查询聊天ID: {}, 文件名: {}, 过滤表达式: {}", chatId, file.getFilename(), filterExpression);
+        // 4.请求模型
         return pdfChatClient.prompt()
                 .user(prompt)
                 .advisors(a -> a.param(CONVERSATION_ID, chatId))
-                .advisors(a -> a.param(FILTER_EXPRESSION, "file_name == '" + file.getFilename() + "'"))
+                .advisors(a -> a.param(FILTER_EXPRESSION, filterExpression))
                 .stream()
                 .content();
     }
@@ -75,8 +78,10 @@ public class PdfController {
             if (!success) {
                 return Result.fail("保存文件失败！");
             }
-            // 3.写入向量库
-            this.writeToVectorStore(file.getResource());
+            // 3.获取保存后的文件，确保文件名一致
+            Resource savedFile = fileRepository.getFile(chatId);
+            // 4.写入向量库
+            this.writeToVectorStore(savedFile);
             return Result.ok();
         } catch (Exception e) {
             log.error("Failed to upload PDF.", e);
@@ -114,7 +119,12 @@ public class PdfController {
         );
         // 2.读取PDF文档，拆分为Document
         List<Document> documents = reader.read();
-        // 3.写入向量库
+        // 3.为每个Document设置file_name元数据
+        String fileName = resource.getFilename();
+        documents.forEach(document -> {
+            document.getMetadata().put("file_name", fileName);
+        });
+        // 4.写入向量库
         vectorStore.add(documents);
     }
 }

@@ -59,10 +59,12 @@ public class LocalPdfFileRepository implements FileRepository {
                 throw new RuntimeException(e);
             }
         }
-        FileSystemResource vectorResource = new FileSystemResource("chat-pdf.json");
-        if (vectorResource.exists()) {
-            SimpleVectorStore simpleVectorStore = (SimpleVectorStore) vectorStore;
-            simpleVectorStore.load(vectorResource);
+        // 只有当使用SimpleVectorStore时才加载本地向量数据
+        if (vectorStore instanceof SimpleVectorStore simpleVectorStore) {
+            FileSystemResource vectorResource = new FileSystemResource("chat-pdf.json");
+            if (vectorResource.exists()) {
+                simpleVectorStore.load(vectorResource);
+            }
         }
     }
 
@@ -70,8 +72,10 @@ public class LocalPdfFileRepository implements FileRepository {
     private void persistent() {
         try {
             chatFiles.store(new FileWriter("chat-pdf.properties"), LocalDateTime.now().toString());
-            SimpleVectorStore simpleVectorStore = (SimpleVectorStore) vectorStore;
-            simpleVectorStore.save(new File("chat-pdf.json"));
+            // 只有当使用SimpleVectorStore时才保存本地向量数据
+            if (vectorStore instanceof SimpleVectorStore simpleVectorStore) {
+                simpleVectorStore.save(new File("chat-pdf.json"));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

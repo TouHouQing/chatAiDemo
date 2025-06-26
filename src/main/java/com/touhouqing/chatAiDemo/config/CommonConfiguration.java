@@ -84,8 +84,8 @@ public class CommonConfiguration {
                         MessageChatMemoryAdvisor.builder(chatMemory).build(),
                         QuestionAnswerAdvisor.builder(vectorStore)
                                 .searchRequest(SearchRequest.builder()
-                                        .similarityThreshold(0.6)
-                                        .topK(2)
+                                        .similarityThreshold(0.2)
+                                        .topK(10)
                                         .build())
                                 .build()
                 )
