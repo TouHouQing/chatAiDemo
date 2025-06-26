@@ -233,8 +233,8 @@ spring:
 ## 📞 联系方式
 
 - 项目维护者：touhouqing
-- 邮箱：[联系邮箱]
-- 项目地址：[GitHub仓库地址]
+- 邮箱：qinghaoyang@foxmail.com
+- 项目地址：[[GitHub仓库地址]](https://github.com/TouHouQing/chatAiDemo)
 
 ## 🔮 未来规划
 
