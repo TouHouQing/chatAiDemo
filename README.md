@@ -233,8 +233,8 @@ This project is licensed under the [LICENSE](LICENSE) license.
 ## 📞 Contact
 
 - Project Maintainer: touhouqing
-- Email: [Contact Email]
-- Project Repository: [GitHub Repository URL]
+- Email: qinghaoyang@foxmail.com
+- Project Repository: [[GitHub Repository URL]](https://github.com/TouHouQing/chatAiDemo)
 
 ## 🔮 Future Roadmap
 
