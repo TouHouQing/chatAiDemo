@@ -1,5 +1,7 @@
 # ChatAI Demo - Intelligent Chat Application Platform
 
+## This repository has been moved to the company's repository as required by the company, and it will no longer be updated hereafter.
+
 ## 📖 Project Overview
 
 ChatAI Demo is a full-stack intelligent chat application platform built with Spring Boot 3.5 and Vue 3. This project integrates multiple AI models and vector databases to provide diverse AI interaction experiences, including general chat, intelligent PDF Q&A, role-playing chat, and customer service functionality.
