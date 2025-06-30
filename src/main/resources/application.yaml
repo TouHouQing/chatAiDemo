@@ -43,6 +43,16 @@ spring:
     password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  neo4j:
+    uri: neo4j+s://90df12a6.databases.neo4j.io
+    authentication:
+      username: neo4j
+      password: ${NEO4J_PASSWORD}
+    pool:
+      max-connection-pool-size: 16
+      idle-time-before-connection-test: 60s
+      max-connection-lifetime: 1h
+
 logging:
   level:
     org.springframework.ai: DEBUG
