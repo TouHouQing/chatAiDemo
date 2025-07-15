@@ -1,255 +1,123 @@
-# ChatAI Demo - Intelligent Chat Application Platform
+# 聊天AI演示项目 (基于Spring AI Alibaba)
 
-## 📖 Project Overview
+本项目是一个基于Spring AI Alibaba的聊天AI演示项目，展示了多种AI应用场景的实现。
 
-ChatAI Demo is a full-stack intelligent chat application platform built with Spring Boot 3.5 and Vue 3. This project integrates multiple AI models and vector databases to provide diverse AI interaction experiences, including general chat, intelligent PDF Q&A, role-playing chat, and customer service functionality.
+## 项目特性
 
-## ✨ Key Features
+- **多场景聊天**：基础聊天、游戏聊天、客服聊天、PDF文档聊天
+- **多模态支持**：文本+图片输入
+- **工具调用**：客服场景中的课程查询和预约功能
+- **RAG知识库**：PDF文档上传和智能问答
+- **聊天记忆**：多轮对话上下文保持
+- **向量存储**：支持Milvus向量数据库
 
-### 🤖 AI Chat Functionality
-- **Multi-Model Support**: Integrated with OpenAI-compatible models (Qwen) and local Ollama models (DeepSeek-R1)
-- **Intelligent Conversation**: Supports contextual memory for continuous dialogue
-- **Streaming Response**: Real-time streaming output for enhanced user experience
+## 技术栈
 
-### 📄 Intelligent PDF Q&A
-- **Document Upload**: Support PDF file upload and online preview
-- **Vector Storage**: Uses Milvus vector database for document vector storage
-- **Intelligent Retrieval**: Semantic similarity-based document content retrieval
-- **Q&A Interaction**: Intelligent question-answering based on PDF content
+- **后端框架**：Spring Boot 3.5.3
+- **AI框架**：Spring AI Alibaba 1.0.0.2
+- **大模型**：阿里云DashScope（通义千问）
+- **向量数据库**：Milvus
+- **关系型数据库**：MySQL + MyBatis Plus
+- **图数据库**：Neo4j
+- **前端框架**：Vue.js
 
-### 🎮 Role-Playing Chat
-- **Game Characters**: Specialized game character chat mode
-- **Customer Service**: Professional dialogue in customer service scenarios
+## 环境配置
 
-### 💾 Data Management
-- **Chat History**: Complete conversation history recording and management
-- **File Storage**: Secure file upload and download mechanism
-- **Data Persistence**: MySQL database for business data storage
+### 1. 环境变量设置
 
-## 🛠️ Technology Stack
+在启动项目前，需要设置以下环境变量：
 
-### Backend Technologies
-- **Framework**: Spring Boot 3.5.0
-- **AI Integration**: Spring AI 1.0.0
-- **Database**: MySQL 8.0
-- **ORM**: MyBatis Plus 3.5.10
-- **Vector Database**: Milvus
-- **Build Tool**: Maven
-- **Java Version**: JDK 17
-
-### Frontend Technologies
-- **Framework**: Vue 3.4 + TypeScript
-- **Build Tool**: Vite 6.1
-- **UI Library**: Naive UI 2.41
-- **State Management**: Pinia 3.0
-- **Router**: Vue Router 4.2
-- **PDF Preview**: PDFTron WebViewer 11.3
-- **Styling**: Sass + CSS3
-
-### AI Models
-- **OpenAI Compatible**: Qwen (qwen-turbo)
-- **Local Model**: DeepSeek-R1:8b (Ollama)
-- **Embedding Model**: text-embedding-v4
-
-## 🚀 Quick Start
-
-### System Requirements
-
-- JDK 17+
-- Node.js 18+
-- MySQL 8.0+
-- Milvus 2.0+
-- Ollama (optional, for local models)
-
-### Backend Deployment
-
-1. **Clone the Project**
 ```bash
-git clone <repository-url>
-cd chatAiDemo
-```
+# 阿里云DashScope API密钥
+export DASHSCOPE_API_KEY=your_dashscope_api_key
 
-2. **Configure Database**
-```sql
-CREATE DATABASE chatAiDemo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-3. **Set Environment Variables**
-```bash
-export OPENAI_API_KEY=your_openai_api_key
+# MySQL数据库密码
 export MYSQL_PASSWORD=your_mysql_password
+
+# Neo4j数据库密码
+export NEO4J_PASSWORD=your_neo4j_password
 ```
 
-4. **Modify Configuration File**
-Edit `src/main/resources/application.yaml` and adjust the following configurations according to your environment:
-- Database connection information
-- Milvus service address
-- AI model configuration
+### 2. 获取DashScope API Key
 
-5. **Start the Application**
+1. 访问 [阿里云DashScope控制台](https://dashscope.console.aliyun.com/)
+2. 注册账号并开通服务
+3. 在API Key管理页面创建新的API Key
+4. 将API Key设置为环境变量 `DASHSCOPE_API_KEY`
+
+### 3. 数据库配置
+
+#### MySQL数据库
+创建数据库 `chatAiDemo`，并执行 `sql.txt` 中的SQL脚本。
+
+#### Milvus向量数据库
+确保Milvus服务运行在 `43.143.215.162:19530`，或修改 `application.yaml` 中的配置。
+
+#### Neo4j图数据库
+配置Neo4j连接信息，或修改 `application.yaml` 中的配置。
+
+## 项目启动
+
+### 后端启动
+
 ```bash
-./mvnw spring-boot:run
+# 编译项目
+mvn clean compile
+
+# 启动项目
+mvn spring-boot:run
 ```
 
-The backend service will start at `http://localhost:8080`
+### 前端启动
 
-### Frontend Deployment
-
-1. **Navigate to Frontend Directory**
 ```bash
 cd chatAiDemo-frontend
-```
 
-2. **Install Dependencies**
-```bash
+# 安装依赖
 npm install
-```
 
-3. **Development Mode**
-```bash
+# 启动开发服务器
 npm run dev
 ```
 
-4. **Production Build**
-```bash
-npm run build
+## API接口
+
+### 基础聊天
+```
+POST /ai/chat
+参数：prompt（提问内容）, chatId（会话ID）, files（可选，多模态文件）
 ```
 
-The frontend application will start at `http://localhost:5173`
-
-## 📁 Project Structure
-
+### 游戏聊天
 ```
-chatAiDemo/
-├── src/main/java/com/touhouqing/chatAiDemo/
-│   ├── controller/          # REST Controllers
-│   │   ├── ChatController.java
-│   │   ├── PdfController.java
-│   │   ├── GameController.java
-│   │   └── CustomerServiceController.java
-│   ├── entity/             # Entity Classes
-│   ├── service/            # Business Services
-│   ├── repository/         # Data Access Layer
-│   ├── config/             # Configuration Classes
-│   └── tools/              # Utility Classes
-├── src/main/resources/
-│   ├── application.yaml    # Application Configuration
-│   └── mapper/             # MyBatis Mapping Files
-├── chatAiDemo-frontend/
-│   ├── src/
-│   │   ├── views/          # Page Components
-│   │   │   ├── AIChat.vue
-│   │   │   ├── ChatPDF.vue
-│   │   │   ├── GameChat.vue
-│   │   │   └── CustomerService.vue
-│   │   ├── components/     # Common Components
-│   │   ├── services/       # API Services
-│   │   └── utils/          # Utility Functions
-│   └── public/             # Static Resources
-└── pom.xml                 # Maven Configuration
+POST /ai/game
+参数：prompt（提问内容）, chatId（会话ID）
 ```
 
-## 🔧 Configuration
-
-### AI Model Configuration
-
-The project supports two types of AI model configurations:
-
-**OpenAI Compatible Model (Alibaba Cloud Qwen)**:
-```yaml
-spring:
-  ai:
-    openai:
-      base-url: https://dashscope.aliyuncs.com/compatible-mode
-      api-key: ${OPENAI_API_KEY}
-      chat:
-        options:
-          model: qwen-turbo
-          temperature: 0.5
+### 客服聊天
+```
+POST /ai/service
+参数：prompt（提问内容）, chatId（会话ID）
 ```
 
-**Local Ollama Model**:
-```yaml
-spring:
-  ai:
-    ollama:
-      base-url: http://localhost:11434
-      chat:
-        model: deepseek-r1:8b
+### PDF文档聊天
+```
+POST /ai/pdf/chat
+参数：prompt（提问内容）, chatId（会话ID）
+
+POST /ai/pdf/upload/{chatId}
+参数：file（PDF文件）
 ```
 
-### Vector Database Configuration
+## 从Spring AI迁移说明
 
-```yaml
-spring:
-  ai:
-    vectorstore:
-      milvus:
-        client:
-          host: "your-milvus-host"
-          port: 19530
-        database-name: "chatAiDemo"
-        collection-name: "chatPDF"
-        embedding-dimension: 1024
-```
+本项目已从原生Spring AI迁移到Spring AI Alibaba，主要变更：
 
-## 🎯 Feature Modules
+1. **依赖更新**：使用 `spring-ai-alibaba-starter-dashscope` 替代 `spring-ai-starter-model-openai`
+2. **配置变更**：使用 `spring.ai.dashscope` 配置替代 `spring.ai.openai`
+3. **模型类更新**：使用 `DashScopeChatModel` 和 `DashScopeEmbeddingModel`
+4. **API Key变更**：使用DashScope API Key替代OpenAI API Key
 
-### 1. AI Intelligent Chat
-- Path: `/ai-chat`
-- Function: Basic AI dialogue with contextual memory support
-- API: `GET /ai/chat`
+## 许可证
 
-### 2. PDF Intelligent Q&A
-- Path: `/chat-pdf`
-- Function: Upload PDF documents for intelligent Q&A based on document content
-- APIs:
-  - `POST /ai/pdf/upload/{chatId}` - File upload
-  - `GET /ai/pdf/chat` - PDF Q&A
-  - `GET /ai/pdf/file/{chatId}` - File download
-
-### 3. Game Role Chat
-- Path: `/game-chat`
-- Function: Role-playing dialogue in gaming scenarios
-- API: `GET /ai/game`
-
-### 4. Customer Service
-- Path: `/customer-service`
-- Function: Professional dialogue in customer service scenarios
-- API: `GET /ai/customer-service`
-
-## 🤝 Contributing
-
-1. Fork the project
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the [LICENSE](LICENSE) license.
-
-## 📞 Contact
-
-- Project Maintainer: touhouqing
-- Email: qinghaoyang@foxmail.com
-- Project Repository: [[GitHub Repository URL]](https://github.com/TouHouQing/chatAiDemo)
-
-## 🔮 Future Roadmap
-
-- [ ] Support for more AI model integrations
-- [ ] Voice conversation functionality
-- [ ] Improved PDF parsing algorithms
-- [ ] User management system
-- [ ] Multi-language internationalization support
-- [ ] Mobile device optimization
-
----
-
-**If this project helps you, please give it a ⭐ Star!**
-
-## 🌐 Language Versions
-
-- [中文版 README](README_zh.md)
-- [English README](README.md) 
+MIT License 

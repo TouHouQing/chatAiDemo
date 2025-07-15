@@ -10,15 +10,12 @@ import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.ai.embedding.EmbeddingModel;
-import org.springframework.ai.openai.OpenAiChatModel;
-import org.springframework.ai.openai.OpenAiEmbeddingModel;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
+import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 
 @Configuration
 public class CommonConfiguration {
@@ -37,7 +34,7 @@ public class CommonConfiguration {
     }
 
     @Bean
-    public ChatClient chatClient(OpenAiChatModel model, ChatMemory chatMemory) {
+    public ChatClient chatClient(DashScopeChatModel model, ChatMemory chatMemory) {
         return ChatClient
                 .builder(model)
                 .defaultOptions(ChatOptions.builder().model("qwen-omni-turbo-latest").build())
@@ -50,56 +47,49 @@ public class CommonConfiguration {
     }
 
     @Bean
-    public ChatClient gameChatClient(OpenAiChatModel model, ChatMemory chatMemory) {
+    public ChatClient gameChatClient(DashScopeChatModel model, ChatMemory chatMemory) {
         return ChatClient
                .builder(model)
                .defaultSystem(SystemConstants.GAME_SYSTEM_PROMPT)
                .defaultAdvisors(
                         new SimpleLoggerAdvisor(),
                         MessageChatMemoryAdvisor.builder(chatMemory).build()
-                )
+               )
                .build();
     }
 
     @Bean
-    public ChatClient serviceChatClient(OpenAiChatModel model, ChatMemory chatMemory, CourseTools  courseTools) {
+    public ChatClient serviceChatClient(DashScopeChatModel model, ChatMemory chatMemory, CourseTools  courseTools) {
         return ChatClient
-              .builder(model)
-              .defaultSystem(SystemConstants.SERVICE_SYSTEM_PROMPT)
-              .defaultAdvisors(
+               .builder(model)
+               .defaultSystem(SystemConstants.SERVICE_SYSTEM_PROMPT)
+               .defaultTools(courseTools)
+               .defaultAdvisors(
                         new SimpleLoggerAdvisor(),
                         MessageChatMemoryAdvisor.builder(chatMemory).build()
-              )
-              .defaultTools(courseTools)
-              .build();
+               )
+               .build();
     }
 
-
+    /*
+     * @description 针对PDF问答的ChatClient
+     */
     @Bean
-    public ChatClient pdfChatClient(OpenAiChatModel model, ChatMemory chatMemory, VectorStore vectorStore) {
+    public ChatClient pdfChatClient(DashScopeChatModel model, ChatMemory chatMemory, VectorStore vectorStore) {
         return ChatClient
-                .builder(model)
-                .defaultSystem("请根据上下文回答问题，遇到上下文没有的问题，不要随意编造。")
-                .defaultAdvisors(
+               .builder(model)
+               .defaultSystem("你是一个友好且知识渊博的AI助手。基于提供的上下文信息来回答问题，如果上下文中没有相关信息，请明确告知用户。")
+               .defaultAdvisors(
                         new SimpleLoggerAdvisor(),
                         MessageChatMemoryAdvisor.builder(chatMemory).build(),
                         QuestionAnswerAdvisor.builder(vectorStore)
                                 .searchRequest(SearchRequest.builder()
-                                        .similarityThreshold(0.2)
                                         .topK(10)
+                                        .similarityThreshold(0.2)
                                         .build())
                                 .build()
-                )
-                .build();
+               )
+               .build();
     }
-    
-    /**
-     * 为Milvus向量存储指定使用OpenAI的embedding model
-     * 解决多个embedding model冲突的问题
-     */
-    @Bean
-    @Primary
-    public EmbeddingModel primaryEmbeddingModel(OpenAiEmbeddingModel openAiEmbeddingModel) {
-        return openAiEmbeddingModel;
-    }
+
 }
