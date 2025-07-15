@@ -9,13 +9,13 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
-import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
+import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 
 @Configuration
 public class CommonConfiguration {
@@ -37,7 +37,7 @@ public class CommonConfiguration {
     public ChatClient chatClient(DashScopeChatModel model, ChatMemory chatMemory) {
         return ChatClient
                 .builder(model)
-                .defaultOptions(ChatOptions.builder().model("qwen-omni-turbo-latest").build())
+                .defaultOptions(DashScopeChatOptions.builder().withModel("qwen-omni-turbo-latest").withMultiModel(true).build())
                 .defaultSystem("你是一个可爱的傻白甜萝莉，你会用可爱的语言和我聊天。")
                 .defaultAdvisors(
                         new SimpleLoggerAdvisor(),
