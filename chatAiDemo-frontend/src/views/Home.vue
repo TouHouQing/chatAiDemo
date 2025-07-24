@@ -1,20 +1,96 @@
 <template>
-  <div class="home" :class="{ 'dark': isDark }">
-    <div class="container">
-      <h1 class="title">Chat AI 应用中心</h1>
-      <div class="cards-grid">
-        <router-link 
-          v-for="app in aiApps" 
-          :key="app.id"
-          :to="app.route"
-          class="card"
-        >
-          <div class="card-content">
-            <component :is="app.icon" class="icon" />
-            <h2>{{ app.title }}</h2>
-            <p>{{ app.description }}</p>
+  <div class="home">
+    <div class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge animate-fade-in">
+          <span class="badge-text">🚀 AI 驱动的智能对话平台</span>
+        </div>
+
+        <h1 class="hero-title animate-fade-in">
+          <span class="title-line">探索无限可能的</span>
+          <span class="title-highlight gradient-text">AI 对话世界</span>
+        </h1>
+
+        <p class="hero-description animate-fade-in">
+          集成多种AI功能，为您提供智能聊天、文档分析、游戏互动等全方位的AI体验
+        </p>
+
+        <div class="hero-stats animate-fade-in">
+          <div class="stat-item">
+            <div class="stat-number">4+</div>
+            <div class="stat-label">AI 应用</div>
           </div>
-        </router-link>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">在线服务</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">无限可能</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="apps-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">选择您的AI助手</h2>
+          <p class="section-description">每个应用都经过精心设计，为您提供独特的AI体验</p>
+        </div>
+
+        <div class="apps-grid">
+          <div
+            v-for="(app, index) in aiApps"
+            :key="app.id"
+            class="app-card"
+            :style="{ animationDelay: `${index * 0.1}s` }"
+            @click="navigateToApp(app.route)"
+          >
+            <div class="card-background">
+              <div class="card-gradient" :class="`gradient-${app.id}`"></div>
+              <div class="card-pattern"></div>
+            </div>
+
+            <div class="card-content">
+              <div class="card-header">
+                <div class="icon-container" :class="`icon-${app.id}`">
+                  <component :is="app.icon" class="app-icon" />
+                  <div class="icon-glow"></div>
+                </div>
+                <div class="card-badge" v-if="app.badge">{{ app.badge }}</div>
+              </div>
+
+              <div class="card-body">
+                <h3 class="app-title">{{ app.title }}</h3>
+                <p class="app-description">{{ app.description }}</p>
+
+                <div class="app-features">
+                  <span
+                    v-for="feature in app.features"
+                    :key="feature"
+                    class="feature-tag"
+                  >
+                    {{ feature }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <div class="launch-button">
+                  <span>立即体验</span>
+                  <svg class="arrow-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-hover-effect"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -22,167 +98,446 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useDark } from '@vueuse/core'
-import { 
+import { useRouter } from 'vue-router'
+import {
   ChatBubbleLeftRightIcon,
   HeartIcon,
   UserGroupIcon,
   DocumentTextIcon
 } from '@heroicons/vue/24/outline'
 
-const isDark = useDark()
+const router = useRouter()
 
 const aiApps = ref([
   {
     id: 1,
-    title: 'AI 聊天',
-    description: '多模态对话机器人，支持图片、音频等',
+    title: 'AI 智能对话',
+    description: '支持多模态交互的智能对话机器人，可处理文本、图片、音频等多种输入',
     route: '/ai-chat',
-    icon: ChatBubbleLeftRightIcon
+    icon: ChatBubbleLeftRightIcon,
+    badge: 'HOT',
+    features: ['多模态', '实时对话', '智能回复']
   },
   {
     id: 2,
-    title: '哄哄模拟器',
-    description: '一个帮助你练习哄女朋友开心的小游戏',
+    title: '情感模拟器',
+    description: '通过AI模拟真实情感交互，帮助您提升沟通技巧和情商',
     route: '/game',
     icon: HeartIcon,
-    iconClass: 'heart-icon'
+    badge: 'NEW',
+    features: ['情感分析', '互动游戏', '技能提升']
   },
   {
     id: 3,
-    title: 'Chat智能客服',
-    description: '24小时在线的智能课程咨询师',
+    title: '智能客服助手',
+    description: '24小时在线的专业客服机器人，提供即时、准确的咨询服务',
     route: '/customer-service',
-    icon: UserGroupIcon
+    icon: UserGroupIcon,
+    features: ['24/7在线', '专业咨询', '快速响应']
   },
   {
     id: 4,
-    title: 'ChatPDF',
-    description: '打造你的个人知识库，与知识库自由对话',
+    title: 'PDF 智能分析',
+    description: '上传PDF文档，与您的知识库进行智能对话，快速获取信息',
     route: '/chat-pdf',
-    icon: DocumentTextIcon
+    icon: DocumentTextIcon,
+    badge: 'PRO',
+    features: ['文档解析', '智能问答', '知识提取']
   }
 ])
+
+const navigateToApp = (route) => {
+  router.push(route)
+}
 </script>
 
 <style scoped lang="scss">
 .home {
   min-height: 100vh;
-  padding: 2rem;
   background: var(--bg-color);
-  transition: background-color 0.3s;
+}
 
-  .container {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
+/* Hero Section */
+.hero-section {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-20) var(--space-6);
+  position: relative;
 
-  .title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
-    background: linear-gradient(45deg, #007CF0, #00DFD8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: fadeIn 1s ease-out;
-  }
-
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 2rem;
-    justify-items: center;
-    padding: 1rem;
-
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    
-    @media (min-width: 1200px) {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .card {
-    position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 320px;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 2rem;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
+    height: 100%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(59, 130, 246, 0.1) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+}
 
-    .dark & {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
+.hero-content {
+  max-width: 800px;
+  text-align: center;
+  z-index: 1;
+}
 
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      
-      .dark & {
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-      }
-    }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-6);
+  backdrop-filter: blur(10px);
+  animation-delay: 0.1s;
 
-    .card-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
+  .badge-text {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+}
 
-    .icon {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 1rem;
-      color: #007CF0;
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-6);
+  animation-delay: 0.2s;
 
-      &.heart-icon {
-        color: #ff4d4f;
-        animation: pulse 1.5s ease-in-out infinite;
-      }
-    }
-
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      color: #666;
-      font-size: 1rem;
-
-      .dark & {
-        color: #999;
-      }
-    }
+  .title-line {
+    display: block;
+    color: var(--text-color);
+    margin-bottom: var(--space-2);
   }
 
-  &.dark {
-    background: #1a1a1a;
-    
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      
-      p {
-        color: #999;
-      }
+  .title-highlight {
+    display: block;
+    font-size: clamp(3rem, 6vw, 5rem);
+  }
+}
+
+.hero-description {
+  font-size: var(--text-xl);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-10);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  animation-delay: 0.3s;
+}
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  animation-delay: 0.4s;
+}
+
+.stat-item {
+  text-align: center;
+
+  .stat-number {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--primary);
+    line-height: var(--leading-none);
+    margin-bottom: var(--space-1);
+  }
+
+  .stat-label {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+    font-weight: 500;
+  }
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border-color);
+}
+
+/* Apps Section */
+.apps-section {
+  padding: var(--space-20) var(--space-6);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-16);
+}
+
+.section-title {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: var(--space-4);
+}
+
+.section-description {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-8);
+  margin-top: var(--space-12);
+}
+
+.app-card {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: var(--radius-3xl);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition-all);
+  border: 1px solid var(--border-color);
+  animation: fadeInUp 0.6s ease-out both;
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-2xl);
+    border-color: var(--primary);
+
+    .card-hover-effect {
+      opacity: 1;
+    }
+
+    .icon-glow {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+
+    .launch-button {
+      background: var(--primary);
+      color: white;
+      transform: translateX(4px);
+    }
+
+    .arrow-icon {
+      transform: translateX(4px);
     }
   }
 }
 
-@keyframes fadeIn {
+.card-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.card-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.05;
+
+  &.gradient-1 {
+    background: var(--gradient-primary);
+  }
+
+  &.gradient-2 {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+  }
+
+  &.gradient-3 {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  }
+
+  &.gradient-4 {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  }
+}
+
+.card-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%);
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-8);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.icon-container {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-all);
+
+  &.icon-1 {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+  }
+
+  &.icon-2 {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+  }
+
+  &.icon-3 {
+    background: linear-gradient(135deg, #4ecdc4, #44a08d);
+  }
+
+  &.icon-4 {
+    background: linear-gradient(135deg, #a8edea, #fed6e3);
+  }
+}
+
+.app-icon {
+  width: 32px;
+  height: 32px;
+  color: white;
+  z-index: 2;
+  position: relative;
+}
+
+.icon-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-2xl);
+  background: inherit;
+  opacity: 0;
+  filter: blur(20px);
+  transition: var(--transition-all);
+  z-index: 0;
+}
+
+.card-badge {
+  padding: var(--space-1) var(--space-3);
+  background: var(--accent-500);
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-body {
+  flex: 1;
+  margin-bottom: var(--space-6);
+}
+
+.app-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: var(--space-3);
+  line-height: var(--leading-tight);
+}
+
+.app-description {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-4);
+}
+
+.app-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.feature-tag {
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-secondary);
+  color: var(--text-tertiary);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+}
+
+.card-footer {
+  margin-top: auto;
+}
+
+.launch-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-4) var(--space-6);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  color: var(--text-color);
+  font-weight: 600;
+  transition: var(--transition-all);
+
+  .arrow-icon {
+    width: 20px;
+    height: 20px;
+    transition: var(--transition-all);
+  }
+}
+
+.card-hover-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-glass);
+  opacity: 0;
+  transition: var(--transition-all);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Animations */
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -190,33 +545,48 @@ const aiApps = ref([
   }
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
-  .home {
-    padding: 1rem;
-    
-    .container {
-      padding: 0 1rem;
-    }
-    
-    .title {
-      font-size: 2rem;
-    }
+  .hero-section {
+    min-height: 50vh;
+    padding: var(--space-16) var(--space-4);
+  }
 
-    .card {
-      max-width: 100%;
+  .hero-stats {
+    flex-direction: column;
+    gap: var(--space-4);
+
+    .stat-divider {
+      width: 40px;
+      height: 1px;
     }
   }
+
+  .apps-section {
+    padding: var(--space-16) var(--space-4);
+  }
+
+  .apps-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--text-3xl);
+  }
 }
-</style> 
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: var(--space-12) var(--space-3);
+  }
+
+  .card-content {
+    padding: var(--space-6);
+  }
+
+  .hero-description {
+    font-size: var(--text-lg);
+  }
+}
+</style>

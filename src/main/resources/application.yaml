@@ -15,7 +15,7 @@ spring:
           temperature: 0.5
       embedding:
         options:
-          model: text-embedding-v4
+          model: text-embedding-v3
         enabled: true
     ollama:
       base-url: http://localhost:11434
@@ -26,7 +26,7 @@ spring:
     vectorstore:
       milvus:
         client:
-          host: "43.143.215.162"
+          host: ${MILVUS_HOST}
           port: 19530
           username: ""
           password: ""
@@ -47,7 +47,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   neo4j:
-    uri: neo4j+s://90df12a6.databases.neo4j.io
+    uri: neo4j+s://0b6068b5.databases.neo4j.io
     authentication:
       username: neo4j
       password: ${NEO4J_PASSWORD}

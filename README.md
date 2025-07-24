@@ -1,123 +1,116 @@
-# 聊天AI演示项目 (基于Spring AI Alibaba)
+# Chat AI Demo - 智能对话平台
 
-本项目是一个基于Spring AI Alibaba的聊天AI演示项目，展示了多种AI应用场景的实现。
+<div align="center">
 
-## 项目特性
+![Chat AI Demo](https://img.shields.io/badge/Chat%20AI%20Demo-v1.0.0-blue.svg)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.3-green.svg)
+![Spring AI Alibaba](https://img.shields.io/badge/Spring%20AI%20Alibaba-1.0.0.2-orange.svg)
+![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-- **多场景聊天**：基础聊天、游戏聊天、客服聊天、PDF文档聊天
-- **多模态支持**：文本+图片输入
-- **工具调用**：客服场景中的课程查询和预约功能
-- **RAG知识库**：PDF文档上传和智能问答
-- **聊天记忆**：多轮对话上下文保持
-- **向量存储**：支持Milvus向量数据库
+**一个基于 Spring AI Alibaba 的综合性AI对话平台**
 
-## 技术栈
+[🌐 English Documentation](README_EN.md) | [📖 中文文档](README_CN.md)
 
-- **后端框架**：Spring Boot 3.5.3
-- **AI框架**：Spring AI Alibaba 1.0.0.2
-- **大模型**：阿里云DashScope（通义千问）
-- **向量数据库**：Milvus
-- **关系型数据库**：MySQL + MyBatis Plus
-- **图数据库**：Neo4j
-- **前端框架**：Vue.js
+</div>
 
-## 环境配置
+---
 
-### 1. 环境变量设置
+## 📋 项目简介
 
-在启动项目前，需要设置以下环境变量：
+Chat AI Demo 是一个功能丰富的AI对话平台，集成了多种AI应用场景：
 
-```bash
-# 阿里云DashScope API密钥
-export DASHSCOPE_API_KEY=your_dashscope_api_key
+- 🤖 **智能对话** - 支持多模态交互的AI聊天机器人
+- 🎮 **情感模拟** - 游戏化的情感交互体验
+- 🎧 **智能客服** - 24/7在线客服助手
+- 📄 **文档问答** - PDF文档智能分析与问答
+- �️ **数据爬虫** - 政府采购数据爬取与AI分析
 
-# MySQL数据库密码
-export MYSQL_PASSWORD=your_mysql_password
+## 🚀 快速开始
 
-# Neo4j数据库密码
-export NEO4J_PASSWORD=your_neo4j_password
-```
+### 环境要求
+- Java 17+
+- Node.js 16+
+- MySQL 8.0+
+- Neo4j 4.x+
+- Milvus 2.x+
 
-### 2. 获取DashScope API Key
-
-1. 访问 [阿里云DashScope控制台](https://dashscope.console.aliyun.com/)
-2. 注册账号并开通服务
-3. 在API Key管理页面创建新的API Key
-4. 将API Key设置为环境变量 `DASHSCOPE_API_KEY`
-
-### 3. 数据库配置
-
-#### MySQL数据库
-创建数据库 `chatAiDemo`，并执行 `sql.txt` 中的SQL脚本。
-
-#### Milvus向量数据库
-确保Milvus服务运行在 `43.143.215.162:19530`，或修改 `application.yaml` 中的配置。
-
-#### Neo4j图数据库
-配置Neo4j连接信息，或修改 `application.yaml` 中的配置。
-
-## 项目启动
-
-### 后端启动
+### 一键启动
 
 ```bash
-# 编译项目
-mvn clean compile
+# 1. 克隆项目
+git clone https://github.com/touhouqing/chatAiDemo.git
+cd chatAiDemo
 
-# 启动项目
+# 2. 设置环境变量
+export DASHSCOPE_API_KEY=your_api_key
+export MYSQL_PASSWORD=your_password
+export NEO4J_PASSWORD=your_password
+
+# 3. 启动后端
 mvn spring-boot:run
-```
 
-### 前端启动
-
-```bash
+# 4. 启动前端
 cd chatAiDemo-frontend
-
-# 安装依赖
-npm install
-
-# 启动开发服务器
-npm run dev
+npm install && npm run dev
 ```
 
-## API接口
+## � 详细文档
 
-### 基础聊天
+根据您的语言偏好选择对应的详细文档：
+
+### 🌐 [English Documentation](README_EN.md)
+Complete English documentation including:
+- Detailed feature descriptions
+- API documentation
+- Deployment guides
+- Contributing guidelines
+
+### � [中文文档](README_CN.md)
+完整的中文文档包含：
+- 详细功能说明
+- API接口文档
+- 部署指南
+- 贡献指南
+
+## 🎯 核心功能预览
+
+| 功能模块 | 描述 | 技术栈 |
+|---------|------|--------|
+| 🤖 AI对话 | 多模态智能对话 | Spring AI Alibaba + DashScope |
+| 📄 PDF分析 | 文档智能问答 | RAG + Milvus向量数据库 |
+| 🕷️ 数据爬虫 | 政府采购数据爬取 | WebMagic + Neo4j |
+| 🎮 情感模拟 | 游戏化交互体验 | Vue.js + TypeScript |
+| 🎧 智能客服 | 工具调用与预约 | Function Calling |
+
+## 📊 项目架构
+
 ```
-POST /ai/chat
-参数：prompt（提问内容）, chatId（会话ID）, files（可选，多模态文件）
+chatAiDemo/
+├── src/main/java/           # Spring Boot 后端
+│   ├── controller/          # REST API 控制器
+│   ├── service/            # 业务逻辑服务
+│   ├── config/             # 配置类
+│   └── entity/             # 数据实体
+├── chatAiDemo-frontend/     # Vue.js 前端
+│   ├── src/views/          # 页面组件
+│   ├── src/components/     # 通用组件
+│   └── src/router/         # 路由配置
+└── sql.txt                 # 数据库初始化脚本
 ```
 
-### 游戏聊天
-```
-POST /ai/game
-参数：prompt（提问内容）, chatId（会话ID）
-```
+## 🤝 贡献
 
-### 客服聊天
-```
-POST /ai/service
-参数：prompt（提问内容）, chatId（会话ID）
-```
+欢迎提交 Issue 和 Pull Request！
 
-### PDF文档聊天
-```
-POST /ai/pdf/chat
-参数：prompt（提问内容）, chatId（会话ID）
+## 📄 许可证
 
-POST /ai/pdf/upload/{chatId}
-参数：file（PDF文件）
-```
+本项目采用 [MIT License](LICENSE) 开源协议。
 
-## 从Spring AI迁移说明
+---
 
-本项目已从原生Spring AI迁移到Spring AI Alibaba，主要变更：
+<div align="center">
 
-1. **依赖更新**：使用 `spring-ai-alibaba-starter-dashscope` 替代 `spring-ai-starter-model-openai`
-2. **配置变更**：使用 `spring.ai.dashscope` 配置替代 `spring.ai.openai`
-3. **模型类更新**：使用 `DashScopeChatModel` 和 `DashScopeEmbeddingModel`
-4. **API Key变更**：使用DashScope API Key替代OpenAI API Key
+**⭐ 如果这个项目对您有帮助，请给个 Star！**
 
-## 许可证
-
-MIT License 
+</div>

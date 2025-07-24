@@ -101,7 +101,12 @@ import {
 import ChatMessage from '../components/ChatMessage.vue'
 import { chatAPI } from '../services/api'
 
-const isDark = useDark()
+const isDark = useDark({
+  selector: 'html',
+  attribute: 'class',
+  valueDark: 'dark',
+  valueLight: ''
+})
 const messagesRef = ref(null)
 const inputRef = ref(null)
 const userInput = ref('')
@@ -399,99 +404,120 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .ai-chat {
-  position: fixed;  // 修改为固定定位
-  top: 64px;       // 导航栏高度
+  position: fixed;
+  top: 80px; // 调整导航栏高度
   left: 0;
   right: 0;
   bottom: 0;
-  display: flex;
   background: var(--bg-color);
-  overflow: hidden; // 防止页面滚动
+  overflow: hidden;
 
   .chat-container {
-    flex: 1;
     display: flex;
-    max-width: 1800px;
+    max-width: 1600px;
     width: 100%;
+    height: 100%;
     margin: 0 auto;
-    padding: 1.5rem 2rem;
-    gap: 1.5rem;
-    height: 100%;    // 确保容器占满高度
-    overflow: hidden; // 防止容器滚动
+    padding: var(--space-6);
+    gap: var(--space-6);
+    overflow: hidden;
   }
 
   .sidebar {
-    width: 300px;
+    width: 320px;
     display: flex;
     flex-direction: column;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-3xl);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+
     .history-header {
-      flex-shrink: 0;  // 防止头部压缩
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      
+      flex-shrink: 0;
+      padding: var(--space-6);
+      border-bottom: 1px solid var(--border-color);
+      background: var(--glass-bg);
+
       h2 {
-        font-size: 1.25rem;
+        font-size: var(--text-xl);
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: var(--space-4);
       }
-      
+
       .new-chat {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        background: #007CF0;
+        gap: var(--space-2);
+        width: 100%;
+        padding: var(--space-3) var(--space-4);
+        border-radius: var(--radius-xl);
+        background: var(--gradient-primary);
         color: white;
         border: none;
         cursor: pointer;
-        transition: background-color 0.3s;
-        
+        font-weight: 600;
+        font-size: var(--text-sm);
+        transition: var(--transition-all);
+        box-shadow: var(--shadow-md);
+
         &:hover {
-          background: #0066cc;
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-lg);
         }
-        
+
         .icon {
-          width: 1.25rem;
-          height: 1.25rem;
+          width: 18px;
+          height: 18px;
         }
       }
     }
-    
+
     .history-list {
       flex: 1;
-      overflow-y: auto;  // 允许历史记录滚动
-      padding: 0 1rem 1rem;
-      
+      overflow-y: auto;
+      padding: var(--space-4);
+
       .history-item {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem;
-        border-radius: 0.5rem;
+        gap: var(--space-3);
+        padding: var(--space-3) var(--space-4);
+        border-radius: var(--radius-xl);
         cursor: pointer;
-        transition: background-color 0.3s;
-        
+        transition: var(--transition-all);
+        margin-bottom: var(--space-2);
+        border: 1px solid transparent;
+
         &:hover {
-          background: rgba(255, 255, 255, 0.1);
+          background: var(--bg-secondary);
+          border-color: var(--border-hover);
+          transform: translateX(4px);
         }
-        
+
         &.active {
-          background: rgba(0, 124, 240, 0.1);
+          background: var(--primary);
+          color: white;
+          box-shadow: var(--shadow-glow);
+
+          .icon {
+            color: white;
+          }
         }
-        
+
         .icon {
-          width: 1.25rem;
-          height: 1.25rem;
+          width: 20px;
+          height: 20px;
+          color: var(--primary);
+          transition: var(--transition-all);
         }
-        
+
         .title {
           flex: 1;
+          font-size: var(--text-sm);
+          font-weight: 500;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -504,96 +530,121 @@ onMounted(() => {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    overflow: hidden;  // 防止内容溢出
-    
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-3xl);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+
     .messages {
       flex: 1;
-      overflow-y: auto;  // 只允许消息区域滚动
-      padding: 2rem;
+      overflow-y: auto;
+      padding: var(--space-8);
+
+      /* 自定义滚动条 */
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: var(--radius-full);
+
+        &:hover {
+          background: var(--border-hover);
+        }
+      }
     }
-    
+
     .input-area {
       flex-shrink: 0;
-      padding: 1.5rem 2rem;
-      background: rgba(255, 255, 255, 0.98);
-      border-top: 1px solid rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      padding: var(--space-6);
+      background: var(--glass-bg);
+      border-top: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
 
       .selected-files {
-        background: rgba(0, 0, 0, 0.02);
-        border-radius: 0.75rem;
-        padding: 0.75rem;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        
+        background: var(--bg-secondary);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-4);
+        margin-bottom: var(--space-4);
+        border: 1px solid var(--border-color);
+
         .file-item {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0.75rem;
-          background: #fff;
-          border-radius: 0.5rem;
-          margin-bottom: 0.75rem;
-          border: 1px solid rgba(0, 0, 0, 0.05);
-          transition: all 0.2s ease;
-          
+          padding: var(--space-3) var(--space-4);
+          background: var(--card-bg);
+          border-radius: var(--radius-xl);
+          margin-bottom: var(--space-3);
+          border: 1px solid var(--border-color);
+          transition: var(--transition-all);
+
           &:last-child {
             margin-bottom: 0;
           }
-          
+
           &:hover {
-            background: rgba(0, 124, 240, 0.02);
-            border-color: rgba(0, 124, 240, 0.2);
+            background: var(--bg-tertiary);
+            border-color: var(--primary);
+            transform: translateY(-1px);
           }
-          
+
           .file-info {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            
+            gap: var(--space-3);
+
             .icon {
-              width: 1.5rem;
-              height: 1.5rem;
-              color: #007CF0;
+              width: 24px;
+              height: 24px;
+              color: var(--primary);
             }
-            
+
             .file-name {
-              font-size: 0.875rem;
-              color: #333;
-              font-weight: 500;
+              font-size: var(--text-sm);
+              color: var(--text-color);
+              font-weight: 600;
             }
-            
+
             .file-size {
-              font-size: 0.75rem;
-              color: #666;
-              background: rgba(0, 0, 0, 0.05);
-              padding: 0.25rem 0.5rem;
-              border-radius: 1rem;
+              font-size: var(--text-xs);
+              color: var(--text-tertiary);
+              background: var(--bg-tertiary);
+              padding: var(--space-1) var(--space-2);
+              border-radius: var(--radius-full);
+              margin-left: var(--space-2);
             }
           }
-          
+
           .remove-btn {
-            padding: 0.375rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border: none;
-            background: rgba(0, 0, 0, 0.05);
-            color: #666;
+            background: var(--bg-tertiary);
+            color: var(--text-tertiary);
             cursor: pointer;
-            border-radius: 0.375rem;
-            transition: all 0.2s ease;
-            
+            border-radius: var(--radius-lg);
+            transition: var(--transition-all);
+
             &:hover {
-              background: #ff4d4f;
-              color: #fff;
+              background: var(--error-500);
+              color: white;
+              transform: scale(1.1);
             }
-            
+
             .icon {
-              width: 1.25rem;
-              height: 1.25rem;
+              width: 16px;
+              height: 16px;
             }
           }
         }
@@ -601,44 +652,76 @@ onMounted(() => {
 
       .input-row {
         display: flex;
-        gap: 1rem;
+        gap: var(--space-3);
         align-items: flex-end;
-        background: #fff;
-        padding: 0.75rem;
-        border-radius: 1rem;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background: var(--card-bg);
+        padding: var(--space-4);
+        border-radius: var(--radius-2xl);
+        border: 2px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
+        transition: var(--transition-all);
+
+        &:focus-within {
+          border-color: var(--primary);
+          box-shadow: var(--shadow-glow);
+        }
 
         .file-upload {
           .hidden {
             display: none;
           }
-          
+
           .upload-btn {
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 48px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
             border: none;
-            border-radius: 0.75rem;
-            background: rgba(0, 124, 240, 0.1);
-            color: #007CF0;
+            border-radius: var(--radius-xl);
+            background: var(--bg-secondary);
+            color: var(--primary);
             cursor: pointer;
-            transition: all 0.2s ease;
-            
-            &:hover:not(:disabled) {
-              background: rgba(0, 124, 240, 0.2);
+            transition: var(--transition-all);
+            position: relative;
+            overflow: hidden;
+
+            &::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: var(--gradient-primary);
+              opacity: 0;
+              transition: var(--transition-all);
             }
-            
+
+            &:hover:not(:disabled) {
+              transform: translateY(-2px);
+              box-shadow: var(--shadow-md);
+
+              &::before {
+                opacity: 1;
+              }
+
+              .icon {
+                color: white;
+                z-index: 1;
+                position: relative;
+              }
+            }
+
             &:disabled {
               opacity: 0.5;
               cursor: not-allowed;
             }
-            
+
             .icon {
-              width: 1.25rem;
-              height: 1.25rem;
+              width: 20px;
+              height: 20px;
+              transition: var(--transition-all);
             }
           }
         }
@@ -648,48 +731,72 @@ onMounted(() => {
           resize: none;
           border: none;
           background: transparent;
-          padding: 0.75rem;
-          color: inherit;
-          font-family: inherit;
-          font-size: 1rem;
-          line-height: 1.5;
-          max-height: 150px;
-          
+          padding: var(--space-3) var(--space-4);
+          color: var(--text-color);
+          font-family: var(--font-family-sans);
+          font-size: var(--text-base);
+          line-height: var(--leading-relaxed);
+          max-height: 120px;
+          min-height: 48px;
+
           &:focus {
             outline: none;
           }
-          
+
           &::placeholder {
-            color: #999;
+            color: var(--text-tertiary);
           }
         }
-        
+
         .send-button {
-          width: 2.5rem;
-          height: 2.5rem;
+          width: 48px;
+          height: 48px;
           display: flex;
           align-items: center;
           justify-content: center;
           border: none;
-          border-radius: 0.75rem;
-          background: #007CF0;
+          border-radius: var(--radius-xl);
+          background: var(--gradient-primary);
           color: white;
           cursor: pointer;
-          transition: all 0.2s ease;
-          
+          transition: var(--transition-all);
+          box-shadow: var(--shadow-md);
+          position: relative;
+          overflow: hidden;
+
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+          }
+
           &:hover:not(:disabled) {
-            background: #0066cc;
-            transform: translateY(-1px);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-glow);
+
+            &::before {
+              transform: translateX(100%);
+            }
           }
-          
+
           &:disabled {
-            background: #ccc;
+            background: var(--bg-tertiary);
+            color: var(--text-tertiary);
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
           }
-          
+
           .icon {
-            width: 1.25rem;
-            height: 1.25rem;
+            width: 20px;
+            height: 20px;
+            transition: var(--transition-all);
           }
         }
       }
@@ -697,130 +804,208 @@ onMounted(() => {
   }
 }
 
-.dark {
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .ai-chat .chat-container {
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
   .sidebar {
-    background: rgba(40, 40, 40, 0.95);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  }
-  
-  .chat-main {
-    background: rgba(40, 40, 40, 0.95);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    
-    .input-area {
-      background: rgba(30, 30, 30, 0.98);
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      
-      .selected-files {
-        background: rgba(255, 255, 255, 0.02);
-        border-color: rgba(255, 255, 255, 0.05);
-        
-        .file-item {
-          background: rgba(255, 255, 255, 0.02);
-          border-color: rgba(255, 255, 255, 0.05);
-          
-          &:hover {
-            background: rgba(0, 124, 240, 0.1);
-            border-color: rgba(0, 124, 240, 0.3);
-          }
-          
-          .file-info {
-            .icon {
-              color: #007CF0;
-            }
-            
-            .file-name {
-              color: #fff;
-            }
-            
-            .file-size {
-              color: #999;
-              background: rgba(255, 255, 255, 0.1);
-            }
-          }
-          
-          .remove-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #999;
-            
-            &:hover {
-              background: #ff4d4f;
-              color: #fff;
-            }
-          }
-        }
-      }
-
-      .input-row {
-        background: rgba(255, 255, 255, 0.02);
-        border-color: rgba(255, 255, 255, 0.05);
-        box-shadow: none;
-
-        textarea {
-          color: #fff;
-          
-          &::placeholder {
-            color: #666;
-          }
-        }
-
-        .file-upload .upload-btn {
-          background: rgba(0, 124, 240, 0.2);
-          color: #007CF0;
-          
-          &:hover:not(:disabled) {
-            background: rgba(0, 124, 240, 0.3);
-          }
-        }
-      }
-    }
-  }
-  
-  .history-item {
-    &:hover {
-      background: rgba(255, 255, 255, 0.05) !important;
-    }
-    
-    &.active {
-      background: rgba(0, 124, 240, 0.2) !important;
-    }
-  }
-  
-  textarea {
-    background: rgba(255, 255, 255, 0.05) !important;
-    
-    &:focus {
-      background: rgba(255, 255, 255, 0.1) !important;
-    }
-  }
-
-  .input-area {
-    .file-upload {
-      .upload-btn {
-        background: rgba(255, 255, 255, 0.1);
-        color: #999;
-        
-        &:hover:not(:disabled) {
-          background: rgba(255, 255, 255, 0.2);
-          color: #fff;
-        }
-      }
-    }
+    width: 280px;
   }
 }
 
 @media (max-width: 768px) {
   .ai-chat {
+    top: 70px; // 移动端导航栏高度调整
+
     .chat-container {
-      padding: 0;
+      padding: var(--space-3);
+      flex-direction: column;
+      gap: 0;
     }
-    
+
     .sidebar {
-      display: none; // 在移动端隐藏侧边栏
+      width: 100%;
+      height: 200px;
+      order: 2;
+      border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+      margin-top: var(--space-3);
+
+      .history-header {
+        padding: var(--space-4);
+
+        h2 {
+          font-size: var(--text-lg);
+          margin-bottom: var(--space-3);
+        }
+
+        .new-chat {
+          padding: var(--space-2) var(--space-3);
+          font-size: var(--text-xs);
+        }
+      }
+
+      .history-list {
+        padding: var(--space-3);
+
+        .history-item {
+          padding: var(--space-2) var(--space-3);
+
+          .icon {
+            width: 16px;
+            height: 16px;
+          }
+
+          .title {
+            font-size: var(--text-xs);
+          }
+        }
+      }
     }
-    
+
     .chat-main {
-      border-radius: 0;
+      flex: 1;
+      order: 1;
+      border-radius: var(--radius-2xl);
+
+      .messages {
+        padding: var(--space-4);
+      }
+
+      .input-area {
+        padding: var(--space-4);
+
+        .input-row {
+          padding: var(--space-3);
+          gap: var(--space-2);
+
+          .file-upload .upload-btn,
+          .send-button {
+            width: 40px;
+            height: 40px;
+
+            .icon {
+              width: 18px;
+              height: 18px;
+            }
+          }
+
+          textarea {
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--text-sm);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .ai-chat {
+    top: 60px;
+
+    .chat-container {
+      padding: var(--space-2);
+    }
+
+    .sidebar {
+      height: 160px;
+
+      .history-header {
+        padding: var(--space-3);
+
+        .new-chat {
+          padding: var(--space-1) var(--space-2);
+
+          .icon {
+            width: 14px;
+            height: 14px;
+          }
+        }
+      }
+    }
+
+    .chat-main {
+      .messages {
+        padding: var(--space-3);
+      }
+
+      .input-area {
+        padding: var(--space-3);
+
+        .input-row {
+          .file-upload .upload-btn,
+          .send-button {
+            width: 36px;
+            height: 36px;
+
+            .icon {
+              width: 16px;
+              height: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* 动画增强 */
+.history-item {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.file-item {
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 加载状态 */
+.loading-message {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  color: var(--text-secondary);
+  font-style: italic;
+
+  .loading-dots {
+    display: flex;
+    gap: var(--space-1);
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: pulse 1.4s ease-in-out infinite both;
+
+      &:nth-child(1) { animation-delay: -0.32s; }
+      &:nth-child(2) { animation-delay: -0.16s; }
+      &:nth-child(3) { animation-delay: 0s; }
     }
   }
 }

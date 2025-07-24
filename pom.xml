@@ -72,7 +72,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-            <version>3.5.10.1</version>
+            <version>3.5.12</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -87,6 +87,16 @@
         <dependency>
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-core</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-extension</artifactId>
+            <version>1.0.3</version>
         </dependency>
     </dependencies>
     <dependencyManagement>
