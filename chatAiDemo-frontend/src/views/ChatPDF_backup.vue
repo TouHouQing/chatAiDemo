@@ -151,7 +151,7 @@ const currentPdfName = ref('')
 const isDragging = ref(false)
 const uploadingFileName = ref('')
 const pdfFile = ref(null)
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://ai.grabteacher.ltd'
 
 // 其他方法保持不变...
 // (这里省略了所有的方法实现，因为我们只是重新组织CSS)

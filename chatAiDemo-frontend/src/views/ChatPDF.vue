@@ -154,7 +154,6 @@ const currentMessages = ref([])
 const chatHistory = ref([])
 const currentPdfName = ref('')
 const isDragging = ref(false)
-const BASE_URL = 'http://localhost:8080'
 
 // 自动调整输入框高度
 const adjustTextareaHeight = () => {
@@ -254,8 +253,7 @@ const loadChat = async (chatId) => {
 
     // 从服务器获取 PDF
     isDownloadingPdf.value = true
-    const response = await fetch(`${BASE_URL}/ai/pdf/file/${chatId}`)
-    if (!response.ok) throw new Error('获取 PDF 失败')
+    const response = await chatAPI.getPdfFile(chatId)
     
     // 获取文件名
     const contentDisposition = response.headers.get('content-disposition')
@@ -326,24 +324,11 @@ const handleDrop = async (event) => {
   uploadingFileName.value = file.name
   
   try {
-    // 创建 FormData
-    const formData = new FormData()
-    formData.append('file', file)
-    
     // 生成临时 chatId 或使用现有的
     const uploadChatId = currentChatId.value || `pdf_${Date.now()}`
-    
-    // 发送上传请求，修正 API 路径
-    const response = await fetch(`${BASE_URL}/ai/pdf/upload/${uploadChatId}`, {
-      method: 'POST',
-      body: formData
-    })
-    
-    if (!response.ok) {
-      throw new Error(`上传失败: ${response.status}`)
-    }
-    
-    const data = await response.json()
+
+    // 发送上传请求，使用统一的API
+    const data = await chatAPI.uploadPdfFile(file, uploadChatId)
     
     // 保存聊天 ID 和文件名
     currentChatId.value = data.chatId || uploadChatId
@@ -494,24 +479,11 @@ const handleFileUpload = async (event) => {
   uploadingFileName.value = file.name
   
   try {
-    // 创建 FormData
-    const formData = new FormData()
-    formData.append('file', file)
-    
     // 生成临时 chatId 或使用现有的
     const uploadChatId = currentChatId.value || `pdf_${Date.now()}`
-    
-    // 发送上传请求，修正 API 路径
-    const response = await fetch(`${BASE_URL}/ai/pdf/upload/${uploadChatId}`, {
-      method: 'POST',
-      body: formData
-    })
-    
-    if (!response.ok) {
-      throw new Error(`上传失败: ${response.status}`)
-    }
-    
-    const data = await response.json()
+
+    // 发送上传请求，使用统一的API
+    const data = await chatAPI.uploadPdfFile(file, uploadChatId)
     
     // 保存聊天 ID 和文件名
     currentChatId.value = data.chatId || uploadChatId

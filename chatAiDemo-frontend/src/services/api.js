@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://ai.grabteacher.ltd'
 
 export const chatAPI = {
   // 发送聊天消息
@@ -121,5 +121,41 @@ export const chatAPI = {
       console.error('API Error:', error)
       throw error
     }
+  },
+
+  // 上传 PDF 文件
+  async uploadPdfFile(file, chatId) {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await fetch(`${BASE_URL}/ai/pdf/upload/${chatId}`, {
+        method: 'POST',
+        body: formData
+      })
+
+      if (!response.ok) {
+        throw new Error(`上传失败: ${response.status}`)
+      }
+
+      return await response.json()
+    } catch (error) {
+      console.error('API Error:', error)
+      throw error
+    }
+  },
+
+  // 获取 PDF 文件
+  async getPdfFile(chatId) {
+    try {
+      const response = await fetch(`${BASE_URL}/ai/pdf/file/${chatId}`)
+      if (!response.ok) {
+        throw new Error('获取 PDF 失败')
+      }
+      return response
+    } catch (error) {
+      console.error('API Error:', error)
+      throw error
+    }
   }
-} 
+}
