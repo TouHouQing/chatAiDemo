@@ -1,4 +1,4 @@
-const BASE_URL = 'http://ai.grabteacher.ltd'
+const BASE_URL = 'http://localhost:8080'
 
 export const chatAPI = {
   // 发送聊天消息
