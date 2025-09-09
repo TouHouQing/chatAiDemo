@@ -3,8 +3,8 @@
 <div align="center">
 
 ![Chat AI Demo](https://img.shields.io/badge/Chat%20AI%20Demo-v2.0.0-blue.svg)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.3-green.svg)
-![Spring AI Alibaba](https://img.shields.io/badge/Spring%20AI%20Alibaba-1.0.0.2-orange.svg)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.5-green.svg)
+![Spring AI Alibaba](https://img.shields.io/badge/Spring%20AI%20Alibaba-1.0.0.3-orange.svg)
 ![Neo4j](https://img.shields.io/badge/Neo4j-5.x-red.svg)
 ![Milvus](https://img.shields.io/badge/Milvus-2.x-purple.svg)
 ![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen.svg)

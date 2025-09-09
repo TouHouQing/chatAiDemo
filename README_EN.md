@@ -30,8 +30,8 @@ Chat AI Demo is a comprehensive AI-powered chat platform built with Spring AI Al
 ## 🏗️ Tech Stack
 
 **Backend:**
-- Spring Boot 3.5.3
-- Spring AI Alibaba 1.0.0.2
+- Spring Boot 3.5.5
+- Spring AI Alibaba 1.0.0.3
 - Alibaba Cloud DashScope (Qwen)
 - MySQL + MyBatis Plus
 - Neo4j Graph Database

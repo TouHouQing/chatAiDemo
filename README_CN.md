@@ -30,14 +30,14 @@ Chat AI Demo 是一个基于 Spring AI Alibaba 构建的综合性AI对话平台�
 ## 🏗️ 技术栈
 
 **核心技术架构：**
-- **AI引擎**：Spring AI Alibaba 1.0.0.2 + 阿里云DashScope（通义千问qwen-max）
+- **AI引擎**：Spring AI Alibaba 1.0.0.3 + 阿里云DashScope（通义千问qwen-max）
 - **数据存储**：Neo4j图数据库 + Milvus向量数据库 + MySQL关系数据库
 - **数据采集**：WebMagic网页爬虫 + 直接HTTP请求（绕过反爬虫）
 - **数据处理**：AI智能解析HTML + 结构化数据提取 + 日期格式转换
 
 **后端技术：**
-- Spring Boot 3.5.3
-- Spring AI Alibaba 1.0.0.2
+- Spring Boot 3.5.5
+- Spring AI Alibaba 1.0.0.3
 - 阿里云DashScope（通义千问qwen-max模型）
 - MySQL + MyBatis Plus（关系数据存储）
 - Neo4j 图数据库（实体关系网络）
